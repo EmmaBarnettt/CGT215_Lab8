@@ -72,16 +72,16 @@ int main()
    // left.setStatic(true);
    // world.AddPhysicsBody(left);
 
-   // PhysicsRectangle right;
-   // right.setSize(Vector2f(10, 600));
-   // right.setCenter(Vector2f(795, 300));
-   // right.setStatic(true);
-   // world.AddPhysicsBody(right);
+    PhysicsRectangle right;
+    right.setSize(Vector2f(10, 600));
+    right.setCenter(Vector2f(795, 300));
+    //right.setStatic(false);
+    //world.AddPhysicsBody(right);
 
     Texture redTex;
     LoadTex(redTex, "images/duck.png");
     PhysicsShapeList<PhysicsSprite> ducks;
-    for (int i(0); i < 3; i++) {
+    for (int i(0); i < 10; i++) {
         PhysicsSprite& duck = ducks.Create();
         duck.setTexture(redTex);
         int x = 50 + ((1000 / 5) * i);
