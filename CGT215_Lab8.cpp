@@ -44,7 +44,7 @@ int main()
     RenderWindow window(VideoMode(800, 600), "Balloon Buster");
     World world(Vector2f(0, 0));
     int score(0);
-    int arrows(1);
+    int arrows(5);
 
     PhysicsSprite& crossBow = *new PhysicsSprite();
     Texture cbowTex;
@@ -81,13 +81,13 @@ int main()
     Texture redTex;
     LoadTex(redTex, "images/duck.png");
     PhysicsShapeList<PhysicsSprite> ducks;
-    for (int i(0); i < 6; i++) {
+    for (int i(0); i < 3; i++) {
         PhysicsSprite& duck = ducks.Create();
         duck.setTexture(redTex);
-        int x = 50 + ((700 / 5) * i);
+        int x = 50 + ((1000 / 5) * i);
         Vector2f sz = duck.getSize();
         duck.setCenter(Vector2f(x, 20 + (sz.y / 2)));
-        duck.setVelocity(Vector2f(0.25, 0));
+        duck.setVelocity(Vector2f(0.1, 0)); // change x back to 0.25
         world.AddPhysicsBody(duck);
         duck.onCollision =
             [&drawingArrow, &world, &arrow, &duck, &ducks, &score]
