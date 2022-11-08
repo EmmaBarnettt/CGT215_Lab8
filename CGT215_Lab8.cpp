@@ -46,21 +46,6 @@ int main()
     int score(0);
     int arrows(1);
 
-    SoundBuffer popBuffer;
-    if (!popBuffer.loadFromFile("balloonpop.ogg")) {
-        cout << "coul not load balloonpop.ogg" << endl;
-        exit(5);
-    }
-    Sound popSound;
-    popSound.setBuffer(popBuffer);
-
-    Music music;
-    if (!music.openFromFile("circus.ogg")) {
-        cout << "Failed to load circus.ogg ";
-        exit(6);
-    }
-    music.play();
-
     PhysicsSprite& crossBow = *new PhysicsSprite();
     Texture cbowTex;
     LoadTex(cbowTex, "images/crossbow.png");
@@ -81,38 +66,37 @@ int main()
     top.setStatic(true);
     world.AddPhysicsBody(top);
 
-    PhysicsRectangle left;
-    left.setSize(Vector2f(10, 600));
-    left.setCenter(Vector2f(5, 300));
-    left.setStatic(true);
-    world.AddPhysicsBody(left);
+   // PhysicsRectangle left;
+   // left.setSize(Vector2f(10, 600));
+   // left.setCenter(Vector2f(5, 300));
+   // left.setStatic(true);
+   // world.AddPhysicsBody(left);
 
-    PhysicsRectangle right;
-    right.setSize(Vector2f(10, 600));
-    right.setCenter(Vector2f(795, 300));
-    right.setStatic(true);
-    world.AddPhysicsBody(right);
+   // PhysicsRectangle right;
+   // right.setSize(Vector2f(10, 600));
+   // right.setCenter(Vector2f(795, 300));
+   // right.setStatic(true);
+   // world.AddPhysicsBody(right);
 
     Texture redTex;
-    LoadTex(redTex, "images/red_balloon.png");
-    PhysicsShapeList<PhysicsSprite> balloons;
+    LoadTex(redTex, "images/duck.png");
+    PhysicsShapeList<PhysicsSprite> ducks;
     for (int i(0); i < 6; i++) {
-        PhysicsSprite& balloon = balloons.Create();
-        balloon.setTexture(redTex);
+        PhysicsSprite& duck = ducks.Create();
+        duck.setTexture(redTex);
         int x = 50 + ((700 / 5) * i);
-        Vector2f sz = balloon.getSize();
-        balloon.setCenter(Vector2f(x, 20 + (sz.y / 2)));
-        balloon.setVelocity(Vector2f(0.25, 0));
-        world.AddPhysicsBody(balloon);
-        balloon.onCollision =
-            [&drawingArrow, &world, &arrow, &balloon, &balloons, &score, &popSound]
+        Vector2f sz = duck.getSize();
+        duck.setCenter(Vector2f(x, 20 + (sz.y / 2)));
+        duck.setVelocity(Vector2f(0.25, 0));
+        world.AddPhysicsBody(duck);
+        duck.onCollision =
+            [&drawingArrow, &world, &arrow, &duck, &ducks, &score]
         (PhysicsBodyCollisionResult result) {
             if (result.object2 == arrow) {
-                popSound.play();
                 drawingArrow = false;
                 world.RemovePhysicsBody(arrow);
-                world.RemovePhysicsBody(balloon);
-                balloons.QueueRemove(balloon);
+                world.RemovePhysicsBody(duck);
+                ducks.QueueRemove(duck);
                 score += 10;
             }
         };
@@ -127,7 +111,7 @@ int main()
     Font fnt;
     if (!fnt.loadFromFile("arial.ttf")) {
         cout << "Could not load font." << endl;
-        exit(3);
+        //exit(3);
     }
     Clock clock;
     Time lastTime(clock.getElapsedTime());
@@ -155,9 +139,9 @@ int main()
             if (drawingArrow) {
                 window.draw(arrow);
             }
-            balloons.DoRemovals();
-            for (PhysicsShape& balloon : balloons) {
-                window.draw((PhysicsSprite&)balloon);
+            ducks.DoRemovals();
+            for (PhysicsShape& duck : ducks) {
+                window.draw((PhysicsSprite&)duck);
             }
             window.draw(crossBow);
             Text scoreText;
